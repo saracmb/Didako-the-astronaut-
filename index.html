@@ -16,6 +16,8 @@
   .panel{background:#fffdf5;border:2px solid #1a1a1a;padding:14px;position:relative}
   .row{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center}
   .row>div{min-width:0}
+  .row.solo{grid-template-columns:1fr;justify-items:center}
+  .row.solo canvas{width:170px;height:196px}
   .row canvas{width:130px;height:150px;background:#fde68a;border:2px solid #1a1a1a}
   .cap{font-size:17px;line-height:1.3;color:#1a1a1a}
   .how{display:grid;gap:10px;font-size:17px;line-height:1.25;color:#1a1a1a}
@@ -70,10 +72,10 @@
   <div class="panel" id="showPanel" style="display:none;background:#fbf3d2;text-align:center;padding:16px 14px">
     <div style="font-family:'Bowlby One SC';font-weight:900;font-size:clamp(34px,10vw,52px);line-height:1;color:#e0544a;-webkit-text-stroke:1px #1a1a1a">Really?</div>
     <div style="font-family:'Bowlby One SC';font-weight:900;font-size:clamp(20px,5.6vw,30px);line-height:1.15;color:#e0544a;margin:8px 0 14px">You really think the story went like this?</div>
-    <div style="font-family:'Bowlby One SC';font-weight:900;font-size:clamp(18px,5vw,26px);line-height:1.2;color:#1a1a1a;margin-bottom:14px">Come and see the next performance of <span style="color:#e0544a">Didako</span>!</div>
-    <a class="btn" id="showLink" href="#" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;font-size:20px">More info about the next show ›</a>
+    <div style="font-family:'Bowlby One SC';font-weight:900;font-size:clamp(18px,5vw,26px);line-height:1.2;color:#1a1a1a;margin-bottom:14px">Come and see what really happened at <span style="color:#e0544a">Didako's</span> next show!</div>
+    <a class="btn" id="showLink" href="#" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;font-size:20px">INFO SHOW ›</a>
   </div>
-  <div class="panel row"><canvas id="endPic" width="260" height="300"></canvas>
+  <div class="panel row" id="endRow"><canvas id="endPic" width="260" height="300"></canvas>
     <div><div id="endTitle"></div><div class="cap" id="endText" style="margin-top:8px"></div></div></div>
   <div class="panel cap" id="endScore" style="font-family:'Bowlby One SC';font-size:18px;text-align:center"></div>
   <button class="btn" id="retry">TRY THIS PART AGAIN</button>
@@ -1041,6 +1043,7 @@ function best(v){ try{ const b=+localStorage.getItem('didakoBest2')||0; if(v!==u
 function finish(title,text,expr,won){ running=false; render(); const sc=Math.round(S.score), b=best(sc);
   if(won) clearCP();
   $('showPanel').style.display=won?'':'none';
+  $('endText').style.display='none'; $('endScore').style.display='none'; $('endTitle').style.display=won?'none':''; $('endRow').classList.toggle('solo',won);
   const r=$('retry'); if(!won && CP){ r.style.display=''; r.textContent='TRY AGAIN FROM '+CP_NAME[CP.name]; $('again').textContent='START FROM THE BEGINNING'; $('again').classList.add('ghost'); }
   else { r.style.display='none'; $('again').textContent=won?'PLAY AGAIN!':'ONE MORE TRY!'; $('again').classList.remove('ghost'); }
   $('endTitle').textContent=title; $('endText').textContent=text; $('endScore').textContent=`SCORE ${sc}  •  BEST ${b}`; portrait('endPic',expr);
